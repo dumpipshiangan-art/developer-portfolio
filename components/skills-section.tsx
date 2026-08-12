@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import { Code2, Database, Zap } from "lucide-react"
-import { HudChrome } from "@/components/hud-chrome"
+import { SkillsHud } from "@/components/skills-hud"
 
 type Skill = { name: string; icon: string; label: string }
 
@@ -226,8 +226,8 @@ export function SkillsSection() {
         STACK
       </span>
 
-      {/* peripheral HUD chrome */}
-      <HudChrome encryption />
+      {/* peripheral HUD chrome — diagnostics / spectrum analyzer theme */}
+      <SkillsHud />
 
       <div className="relative z-10 mx-auto max-w-[1400px] px-6 lg:px-24">
         {/* eyebrow */}

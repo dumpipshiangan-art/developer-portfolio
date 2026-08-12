@@ -242,6 +242,24 @@
   from { background-position: 0 0; }
   to { background-position: 56px 100px; }
 }
+/* diagnostics equalizer bars (skills HUD) */
+@keyframes hud-eq {
+  0%, 100% { transform: scaleY(0.25); }
+  50% { transform: scaleY(1); }
+}
+/* radar sweep + uplink (contact HUD) */
+@keyframes hud-sweep {
+  to { transform: rotate(360deg); }
+}
+@keyframes hud-ping {
+  0% { transform: scale(0.4); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 0; }
+}
+@keyframes hud-uplink {
+  0% { opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
 
 .hero-rise { animation: hero-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
 .hero-marquee { animation: hero-marquee 24s linear infinite; }

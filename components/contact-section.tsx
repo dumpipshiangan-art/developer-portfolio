@@ -3,7 +3,8 @@
 import emailjs from "@emailjs/browser"
 import { useEffect, useRef, useState } from "react"
 import { User, Mail, MessageSquare, ChevronsRight, CheckCircle2 } from "lucide-react"
-import { HeartbeatLine, HudChrome } from "@/components/hud-chrome"
+import { HeartbeatLine } from "@/components/hud-chrome"
+import { ContactHud } from "@/components/contact-hud"
 
 /* angular comm panel + field clips */
 const panelClip =
@@ -187,13 +188,8 @@ export function ContactSection() {
         SIGNAL
       </span>
 
-      {/* peripheral HUD chrome */}
-      <HudChrome dataStreamLabel="INCOMING..." />
-      {/* HUD module tag */}
-      <div className="absolute bottom-2 left-6 z-20 hidden font-mono text-[11px] leading-tight text-blood/80 xl:block">
-        <div className="tracking-[0.2em] text-paper-dim">HUD MODULE</div>
-        <div>V.04.12.89</div>
-      </div>
+      {/* peripheral HUD chrome — radar / uplink transmission theme */}
+      <ContactHud />
 
       <div className="relative z-10 mx-auto max-w-4xl px-6 lg:px-20">
         <div
