@@ -74,7 +74,7 @@ export function HeroSection() {
     <section
       ref={sectionRef}
       onMouseMove={handleMove}
-      className="hero-hex relative min-h-screen w-full overflow-hidden"
+      className="relative min-h-screen w-full overflow-hidden"
     >
       {/* interactive spotlight */}
       <div

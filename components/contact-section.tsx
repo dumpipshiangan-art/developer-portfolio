@@ -174,7 +174,7 @@ export function ContactSection() {
     "w-full bg-transparent font-mono text-base text-paper placeholder:text-paper-faint focus:outline-none"
 
   return (
-    <section id="contact" className="hero-hex relative w-full overflow-hidden border-t border-white/5 pb-20 pt-24">
+    <section id="contact" className="relative w-full overflow-hidden pb-20 pt-24">
       {/* ambient glow */}
       <div
         aria-hidden

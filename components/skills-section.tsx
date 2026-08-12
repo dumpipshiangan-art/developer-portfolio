@@ -212,7 +212,7 @@ function CategoryPanel({ category }: { category: Category }) {
 
 export function SkillsSection() {
   return (
-    <section id="skills" className="hero-hex relative w-full overflow-hidden border-t border-white/5 pb-20 pt-24">
+    <section id="skills" className="relative w-full overflow-hidden pb-20 pt-24">
       {/* ambient red glow */}
       <div
         aria-hidden

@@ -2,7 +2,7 @@ export function FooterSection() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="relative w-full overflow-hidden border-t border-blood/40 bg-ink">
+    <footer className="relative w-full overflow-hidden">
       {/* top glow line */}
       <div
         aria-hidden
