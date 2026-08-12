@@ -43,7 +43,7 @@ export function SocialLinks({ orientation = "horizontal" }: Props) {
     <div className={vertical ? "flex flex-col items-center gap-4" : ""}>
       {vertical ? (
         <span className="font-mono text-[10px] font-semibold tracking-[0.4em] text-blood [writing-mode:vertical-rl]">
-          CONNECT
+          SOCIAL.LINKS
         </span>
       ) : (
         <div className="mb-4 flex items-center gap-3">

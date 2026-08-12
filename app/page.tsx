@@ -6,7 +6,7 @@ import { FooterSection } from "@/components/footer-section"
 
 export default function Page() {
   return (
-    <main>
+    <main className="page-bg relative">
       <HeroSection />
       <ProjectsSection />
       <SkillsSection />
