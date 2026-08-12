@@ -2,10 +2,18 @@
 
 import { useCallback, useEffect, useState } from "react"
 import Image from "next/image"
-import { X, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react"
+import { X, ChevronLeft, ChevronRight, ExternalLink, Lock } from "lucide-react"
 import type { Project } from "@/components/project-card"
 
 const hexClip = "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)"
+
+// large angular HUD frame with clipped corners
+const frameClip =
+  "polygon(0 34px, 34px 0, calc(100% - 34px) 0, 100% 34px, 100% calc(100% - 34px), calc(100% - 34px) 100%, 34px 100%, 0 calc(100% - 34px))"
+
+// angular button clip (bottom-left + top-right notch)
+const btnClip =
+  "polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px)"
 
 function GithubIcon({ className }: { className?: string }) {
   return (
@@ -79,169 +87,212 @@ export function ProjectModal({
       role="dialog"
       aria-modal="true"
       aria-label={`${project.title} details`}
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8"
     >
       {/* backdrop */}
       <button
         aria-label="Close dialog"
         onClick={onClose}
-        className="absolute inset-0 h-full w-full cursor-default bg-ink/80 backdrop-blur-sm"
+        className="absolute inset-0 h-full w-full cursor-default bg-ink/85 backdrop-blur-sm"
       />
 
-      {/* panel */}
-      <div className="hero-rise hud-card relative z-10 flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-xl border border-blood/30 bg-ink-soft/70 shadow-[0_0_60px_-12px_var(--blood)] backdrop-blur-xl">
-        {/* red glow header wash */}
-        <span
+      {/* frame wrapper (carries the margin decorations) */}
+      <div className="hero-rise relative z-10 w-full max-w-5xl">
+        {/* margin HUD decorations */}
+        <span className="pointer-events-none absolute -left-2 top-10 hidden font-mono text-[10px] leading-relaxed tracking-widest text-blood/70 lg:block">
+          DATA NODE
+          <br />
+          <span className="text-2xl font-bold text-blood/90">04</span>
+        </span>
+        <span className="pointer-events-none absolute -right-3 bottom-16 hidden flex-col items-end font-mono text-[10px] leading-relaxed tracking-widest text-blood/70 lg:flex">
+          SECURE LINK
+          <br />
+          ENCRYPTED
+          <Lock className="mt-1 h-3.5 w-3.5 self-end" />
+        </span>
+        <span className="pointer-events-none absolute -left-2 bottom-2 hidden font-mono text-[10px] leading-relaxed tracking-widest text-blood/60 lg:block">
+          USER: PIPS
+          <br />
+          ID: 2026-08-11
+        </span>
+        <span className="pointer-events-none absolute left-1/3 -top-3 hidden text-blood/50 lg:block" aria-hidden>
+          +
+        </span>
+
+        {/* glowing red frame border */}
+        <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-blood/30 to-transparent"
+          className="absolute inset-0 bg-gradient-to-br from-blood via-blood/60 to-blood/90 shadow-[0_0_80px_-10px_var(--blood)]"
+          style={{ clipPath: frameClip }}
         />
-        {/* corner brackets */}
-        <span className="pointer-events-none absolute left-0 top-0 h-6 w-6 border-l-2 border-t-2 border-blood/70" />
-        <span className="pointer-events-none absolute bottom-0 right-0 h-6 w-6 border-b-2 border-r-2 border-blood/70" />
 
-        {/* scrollable content */}
-        <div className="relative overflow-y-auto p-6 sm:p-8">
-          {/* close button */}
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close"
-            className="absolute right-5 top-5 z-20 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-ink/70 text-paper transition-all duration-300 hover:border-blood hover:bg-blood hover:text-paper"
-          >
-            <X className="h-5 w-5" />
-          </button>
-
-          {/* eyebrow */}
-          <div className="mb-3 flex items-center gap-2">
-            <span className="h-1.5 w-7 rounded-full bg-blood" />
-            <span className="font-mono text-xs font-semibold tracking-[0.35em] text-paper-dim">
-              PROJECT {project.index}
-            </span>
-          </div>
-
-          {/* title + description */}
-          <h3 className="pr-12 font-mono text-2xl font-bold leading-tight text-paper sm:text-3xl">
-            {project.title}
-          </h3>
-          <p className="mt-3 max-w-2xl font-mono text-sm leading-relaxed text-paper-dim">
-            {project.description}
-          </p>
-
-          {/* carousel */}
-          <div className="relative mt-6 overflow-hidden rounded-lg border border-white/10 bg-ink">
-            {/* scanline sweep */}
+        {/* inner surface */}
+        <div
+          className="relative m-[2px] flex max-h-[90vh] flex-col overflow-hidden bg-ink"
+          style={{ clipPath: frameClip }}
+        >
+          {/* scrollable content */}
+          <div className="hero-hex relative overflow-y-auto p-6 sm:p-10">
+            {/* red glow header wash */}
             <span
               aria-hidden
-              className="pointer-events-none absolute inset-x-0 top-0 z-10 h-1/3 bg-gradient-to-b from-blood/15 to-transparent"
-              style={{ animation: "hero-scan 3s linear infinite" }}
+              className="pointer-events-none absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-blood/20 to-transparent"
             />
-            <span className="pointer-events-none absolute inset-0 z-10 ring-1 ring-inset ring-white/10" />
 
-            {/* HUD readout corner */}
-            <span className="absolute right-3 top-3 z-20 rounded border border-blood/40 bg-ink/70 px-2 py-0.5 font-mono text-[10px] tracking-widest text-blood">
-              {String(slide + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}
-            </span>
-
-            {/* slides track */}
-            <div
-              className="flex transition-transform duration-500 ease-out"
-              style={{ transform: `translateX(-${slide * 100}%)` }}
-            >
-              {gallery.map((src, i) => (
-                <div key={src} className="w-full flex-shrink-0">
-                  <Image
-                    src={src || "/placeholder.svg"}
-                    alt={`${project.title} screenshot ${i + 1}`}
-                    width={900}
-                    height={560}
-                    className="w-full h-auto object-contain bg-ink/80"
-                  />
+            {/* header row */}
+            <div className="relative flex items-start justify-between gap-4">
+              <div className="min-w-0">
+                {/* eyebrow */}
+                <div className="mb-3 flex items-center gap-2">
+                  <span className="h-1.5 w-7 rounded-full bg-blood" />
+                  <span className="font-mono text-xs font-semibold tracking-[0.35em] text-paper-dim">
+                    PROJECT {project.index}
+                  </span>
                 </div>
-              ))}
+                <h3 className="font-mono text-3xl font-black leading-tight text-paper sm:text-4xl">
+                  {project.title}
+                </h3>
+                <p className="mt-3 max-w-2xl font-mono text-sm leading-relaxed text-paper-dim">
+                  {project.description}
+                </p>
+              </div>
+
+              {/* right side: status readout + close */}
+              <div className="flex shrink-0 flex-col items-end gap-4">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  aria-label="Close"
+                  className="flex h-11 w-11 items-center justify-center border border-blood/50 bg-ink/70 text-paper transition-all duration-300 hover:border-blood hover:bg-blood hover:text-paper"
+                  style={{ clipPath: hexClip }}
+                >
+                  <X className="h-5 w-5" />
+                </button>
+                <div className="hidden text-right font-mono text-[10px] leading-relaxed tracking-widest text-blood/90 sm:block">
+                  <p className="flex items-center justify-end gap-1.5">
+                    <span className="h-1.5 w-1.5 rounded-full bg-blood shadow-[0_0_8px_2px_var(--blood)]" />
+                    SYS. ONLINE
+                  </p>
+                  <p className="text-paper-dim">STATUS: ACTIVE</p>
+                </div>
+              </div>
             </div>
 
-            {/* arrows */}
-            {count > 1 && (
-              <>
+            {/* body: arrows in the gutters + framed screenshot */}
+            <div className="relative mt-8 flex items-center gap-3 sm:gap-5">
+              {/* prev arrow */}
+              {count > 1 && (
                 <button
                   type="button"
                   onClick={() => go(-1)}
                   aria-label="Previous image"
-                  className="absolute left-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-ink/70 text-paper backdrop-blur transition-all duration-300 hover:border-blood hover:bg-blood"
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-blood/60 bg-ink/70 text-blood transition-all duration-300 hover:border-blood hover:bg-blood hover:text-paper hover:shadow-[0_0_20px_-4px_var(--blood)]"
                 >
                   <ChevronLeft className="h-5 w-5" />
                 </button>
+              )}
+
+              {/* framed screenshot */}
+              <div
+                className="relative flex-1 overflow-hidden border border-blood/40 bg-ink shadow-[0_0_40px_-16px_var(--blood)]"
+                style={{ clipPath: btnClip }}
+              >
+                {/* scanline sweep */}
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-x-0 top-0 z-10 h-1/3 bg-gradient-to-b from-blood/15 to-transparent"
+                  style={{ animation: "hero-scan 3s linear infinite" }}
+                />
+                <span className="pointer-events-none absolute inset-0 z-10 ring-1 ring-inset ring-white/10" />
+
+                {/* HUD readout corner */}
+                <span className="absolute right-3 top-3 z-20 border border-blood/50 bg-ink/70 px-2 py-0.5 font-mono text-[10px] tracking-widest text-blood">
+                  {String(slide + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}
+                </span>
+
+                {/* slides track */}
+                <div
+                  className="flex transition-transform duration-500 ease-out"
+                  style={{ transform: `translateX(-${slide * 100}%)` }}
+                >
+                  {gallery.map((src, i) => (
+                    <div key={src} className="w-full flex-shrink-0">
+                      <Image
+                        src={src || "/placeholder.svg"}
+                        alt={`${project.title} screenshot ${i + 1}`}
+                        width={1000}
+                        height={620}
+                        className="h-auto w-full bg-ink/80 object-contain"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* next arrow */}
+              {count > 1 && (
                 <button
                   type="button"
                   onClick={() => go(1)}
                   aria-label="Next image"
-                  className="absolute right-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-ink/70 text-paper backdrop-blur transition-all duration-300 hover:border-blood hover:bg-blood"
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-blood/60 bg-ink/70 text-blood transition-all duration-300 hover:border-blood hover:bg-blood hover:text-paper hover:shadow-[0_0_20px_-4px_var(--blood)]"
                 >
                   <ChevronRight className="h-5 w-5" />
                 </button>
-              </>
+              )}
+            </div>
+
+            {/* dots */}
+            {count > 1 && (
+              <div className="mt-5 flex items-center justify-center gap-2">
+                {gallery.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setSlide(i)}
+                    aria-label={`Go to image ${i + 1}`}
+                    aria-current={i === slide}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      i === slide ? "w-6 bg-blood" : "w-2 bg-white/25 hover:bg-white/50"
+                    }`}
+                  />
+                ))}
+              </div>
             )}
-          </div>
 
-          {/* dots */}
-          {count > 1 && (
-            <div className="mt-4 flex items-center justify-center gap-2">
-              {gallery.map((_, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => setSlide(i)}
-                  aria-label={`Go to image ${i + 1}`}
-                  aria-current={i === slide}
-                  className={`h-2 rounded-full transition-all duration-300 ${
-                    i === slide ? "w-6 bg-blood" : "w-2 bg-white/25 hover:bg-white/50"
-                  }`}
-                />
-              ))}
-            </div>
-          )}
+            {/* footer: actions + tech badges */}
+            <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-blood/20 pt-6 sm:flex-row">
+              <div className="flex items-center gap-3">
+                <a
+                  href={project.live}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group/btn flex items-center gap-2 border border-blood/70 bg-blood/5 px-6 py-3 font-mono text-sm font-semibold tracking-widest text-blood transition-all duration-300 hover:bg-blood hover:text-paper hover:shadow-[0_0_24px_-6px_var(--blood)]"
+                  style={{ clipPath: btnClip }}
+                >
+                  <ExternalLink className="h-4 w-4 transition-transform duration-300 group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
+                  LIVE PREVIEW
+                </a>
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-2 border border-white/15 bg-ink/60 px-6 py-3 font-mono text-sm font-semibold tracking-widest text-paper transition-all duration-300 hover:border-paper/40"
+                  style={{ clipPath: btnClip }}
+                >
+                  <GithubIcon className="h-4 w-4" />
+                  GITHUB
+                </a>
+              </div>
 
-          {/* footer: actions + tech badges */}
-          <div className="mt-6 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 sm:flex-row">
-            <div className="flex items-center gap-3">
-              <a
-                href={project.live}
-                target="_blank"
-                rel="noreferrer"
-                className="group/btn flex items-center gap-2 rounded-md border border-blood/70 px-5 py-2.5 font-mono text-sm font-semibold tracking-widest text-blood transition-all duration-300 hover:bg-blood hover:text-paper hover:shadow-[0_0_24px_-6px_var(--blood)]"
-              >
-                <ExternalLink className="h-4 w-4 transition-transform duration-300 group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
-                Live Preview
-              </a>
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-2 rounded-md border border-white/15 bg-ink/60 px-5 py-2.5 font-mono text-sm font-semibold tracking-widest text-paper transition-all duration-300 hover:border-paper/40"
-              >
-                <GithubIcon className="h-4 w-4" />
-                GitHub
-              </a>
-            </div>
-
-            <ul className="flex flex-wrap gap-2.5">
-              {project.tags.map((tag) => {
-                const lookup = TAG_ICONS[tag] || TAG_ICONS[tag.toUpperCase()]
-                return (
-                  <li
-                    key={tag}
-                    className="relative flex h-11 w-11 items-center justify-center"
-                  >
-                    <span
-                      className="absolute inset-0 bg-blood/40"
-                      style={{ clipPath: hexClip }}
-                    />
-                    <span
-                      className="absolute inset-[1.5px] bg-ink"
-                      style={{ clipPath: hexClip }}
-                    />
-                    {lookup ? (
-                      <div className="relative flex items-center justify-center">
+              <ul className="flex flex-wrap gap-2.5">
+                {project.tags.map((tag) => {
+                  const lookup = TAG_ICONS[tag] || TAG_ICONS[tag.toUpperCase()]
+                  return (
+                    <li key={tag} className="relative flex h-11 w-11 items-center justify-center">
+                      <span className="absolute inset-0 bg-blood/40" style={{ clipPath: hexClip }} />
+                      <span className="absolute inset-[1.5px] bg-ink" style={{ clipPath: hexClip }} />
+                      {lookup ? (
                         <Image
                           src={lookup}
                           alt={tag}
@@ -249,16 +300,14 @@ export function ProjectModal({
                           height={28}
                           className="relative h-6 w-6 object-contain"
                         />
-                      </div>
-                    ) : (
-                      <span className="relative font-mono text-[10px] font-bold text-paper">
-                        {tag}
-                      </span>
-                    )}
-                  </li>
-                )
-              })}
-            </ul>
+                      ) : (
+                        <span className="relative font-mono text-[10px] font-bold text-paper">{tag}</span>
+                      )}
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
           </div>
         </div>
       </div>

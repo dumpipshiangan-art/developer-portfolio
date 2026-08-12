@@ -14,6 +14,18 @@ export function ProfilePortrait({ tiltX, tiltY }: Props) {
       {/* ambient glow */}
       <div className="absolute -inset-6 -z-10 bg-blood/20 blur-3xl" />
 
+      {/* circular targeting reticle behind the frame */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[118%] w-[118%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-blood/25"
+        style={{ animation: "hero-spin-slow 40s linear infinite" }}
+      />
+      <span
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[104%] w-[104%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-blood/20"
+        style={{ animation: "hero-spin-reverse 60s linear infinite" }}
+      />
+
       {/* outer red HUD frame */}
       <div className="hud-clip bg-blood/50 p-[2px]">
         <div className="hud-clip relative aspect-[4/5] w-full overflow-hidden bg-ink-soft">
@@ -36,7 +48,7 @@ export function ProfilePortrait({ tiltX, tiltY }: Props) {
           {/* HUD readout, top-left */}
           <div className="absolute left-4 top-5 font-mono text-[10px] leading-relaxed text-blood/90">
             <p className="hero-flicker">● REC 00:24:07</p>
-            <p className="text-paper/70">ID // FS-DEV-001</p>
+            <p className="text-paper/70">ID // PS-CRS-001</p>
           </div>
 
           {/* status chip, bottom */}

@@ -1,12 +1,16 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { MapPin, FileText, Mail, ChevronDown } from "lucide-react"
+import { MapPin, FileText, Mail, Heart } from "lucide-react"
 import { NavDock } from "@/components/nav-dock"
 import { ProfilePortrait } from "@/components/profile-portrait"
 import { SocialLinks } from "@/components/social-links"
 
-const ROLES = ["Full Stack Developer", "Computer Engineer"]
+const ROLES = ["Computer Engineering", "Full Stack Developer"]
+
+const roleClip =
+  "polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px)"
+
 const TAGS = [
   "React",
   "Next.js",
@@ -89,13 +93,15 @@ export function HeroSection() {
 
       <NavDock />
 
-      {/* top-right glowing orb (kept) */}
-      <div className="absolute right-6 top-6 z-20 flex flex-col items-center gap-2 sm:right-10">
-        <span
-          className="h-4 w-4 rounded-full bg-blood shadow-[0_0_20px_6px_var(--blood)]"
+      {/* top-right connection readout */}
+      <div className="absolute right-6 top-6 z-20 hidden flex-col items-end gap-1.5 sm:flex sm:right-10">
+        <span className="font-mono text-[10px] font-semibold tracking-[0.3em] text-blood/80">
+          CONNECTION
+        </span>
+        <Heart
+          className="h-5 w-5 fill-blood text-blood"
           style={{ animation: "hero-float 4s ease-in-out infinite" }}
         />
-        <ChevronDown className="h-4 w-4 text-paper-dim" />
       </div>
 
       {/* vertical social rail on the left edge */}
@@ -154,18 +160,31 @@ export function HeroSection() {
             Teresa, Rizal, Philippines
           </p>
 
-          {/* role as a terminal prompt */}
+          {/* role in an angular HUD bracket frame */}
           <div
-            className="hero-rise mt-6 inline-flex items-center gap-2 rounded-lg border border-white/10 bg-black/40 px-4 py-2.5 font-mono text-lg backdrop-blur-sm sm:text-2xl"
+            className="hero-rise mt-6 inline-block"
             style={{ animationDelay: "0.46s" }}
           >
-            <span className="text-blood">{"~/role"}</span>
-            <span className="text-paper-faint">$</span>
-            <span className="font-semibold text-paper">{typed}</span>
-            <span
-              className="inline-block h-6 w-[3px] bg-blood sm:h-7"
-              style={{ animation: "hero-blink 1s step-end infinite" }}
-            />
+            <div className="relative">
+              {/* glowing bracket border */}
+              <span
+                aria-hidden
+                className="absolute inset-0 bg-gradient-to-r from-blood via-blood/60 to-blood/90 shadow-[0_0_28px_-8px_var(--blood)]"
+                style={{ clipPath: roleClip }}
+              />
+              <div
+                className="relative m-[2px] flex items-center gap-2.5 bg-ink px-5 py-2.5 font-mono text-lg sm:text-2xl"
+                style={{ clipPath: roleClip }}
+              >
+                <span className="text-blood">{"~/role"}</span>
+                <span className="text-paper-faint">:</span>
+                <span className="font-semibold text-paper">{typed}</span>
+                <span
+                  className="inline-block h-6 w-[3px] bg-blood sm:h-7"
+                  style={{ animation: "hero-blink 1s step-end infinite" }}
+                />
+              </div>
+            </div>
           </div>
 
           {/* bio */}
@@ -226,7 +245,11 @@ export function HeroSection() {
       </div>
 
       {/* tech-tag marquee ticker along the bottom */}
-      <div className="absolute bottom-0 left-0 z-20 w-full border-t border-white/10 bg-black/50 py-3 backdrop-blur-sm">
+      <div className="absolute bottom-0 left-0 z-20 flex w-full items-center overflow-hidden border-t border-white/10 bg-black/50 py-3 backdrop-blur-sm">
+        <span className="relative z-10 hidden shrink-0 items-center gap-2 border-r border-blood/30 bg-ink px-5 font-mono text-xs font-semibold tracking-[0.3em] text-blood sm:flex">
+          <span className="h-1.5 w-1.5 rotate-45 bg-blood" />
+          TECH.STACK
+        </span>
         <div className="flex w-max hero-marquee">
           {[...TAGS, ...TAGS].map((tag, i) => (
             <span
@@ -240,8 +263,16 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* corner monogram (kept) */}
-      {/* corner monogram removed per request */}
+      {/* corner monogram badge, bottom-left */}
+      <div className="absolute bottom-16 left-6 z-30 hidden lg:block">
+        <span className="relative flex h-14 w-14 items-center justify-center rounded-full border border-blood/50 bg-ink/70 font-mono text-lg font-bold text-paper shadow-[0_0_24px_-8px_var(--blood)] backdrop-blur-sm">
+          <span
+            aria-hidden
+            className="absolute inset-1 rounded-full border border-blood/30"
+          />
+          N
+        </span>
+      </div>
     </section>
   )
 }
